@@ -35,8 +35,20 @@ contract uintTool {
     }
 }
 ```
+## Reading example
 
-## Example input/output part I
-Using previous _value example of 1011022033044055066:
-- _position 19 and _size 1 
-will return 1
+Using the following fictitious value (_value = 20190404002345671103045555602345605676) the following points are true:
+- _position 2 and _size 2 
+will return 76
+- _position 15 and _size 3 
+will return 555
+- _position 38 and _size 4 
+will return 2019
+- _position 34 and _size 2 
+will return 04
+- _position 32 and _size 2 
+will return 04
+- _position 38 and _size 19 
+will return the left half (2019040400234567110) of this particular _value
+- _position 19 and _size 19 
+will return the right half (3045555602345605676) of this particular _value
