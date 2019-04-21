@@ -14,7 +14,41 @@ A single uint256 data slot can store any value between 0 and 1157920892373161954
 The following is an example of how certain slices of data can be accessed individually.
 This is a design which can be implemented in any language which supports modulo arithmetic and exponentiation (i.e. Python and even Solidity). 
 
-## Function logic(psuedo code) to obtain any digit[s] from a uint256
+Based on the assumption that we would want to store any combination of numbers from zero to nine (0 to 9) anywhere inside the single uint256 variable. The upper bound of uint256 is 
+```
+115792089237316195423570985008687907853269984665640564039457584007913129639935
+```
+and therefore the digit on the far left could only ever contain a zero or a one. This might actually come in handy as a flag. There are a total of 78 digits in the upper bound of the uint256 data type and as such the digit on the far left could be accessed as follows.
+
+```
+uint256 big = 115792089237316195423570985008687907853269984665640564039457584007913129639935
+getInt(big, 78, 1)
+```
+
+**Aside from the digit on the far left, there are 77 remaining digits** which can be programmed to have their value set to between zero and nine (0 to 9). One way to prove that there are in fact 77 (0 to 9) digits available, is to execute the following Python3 script which returns the largest possible value of uint256 where all digits equal 9. Warning this test takes a considerable amount of time. Results are posted below.
+
+```
+big = 115792089237316195423570985008687907853269984665640564039457584007913129639935
+
+
+for char in str(big):
+    if char != '9':
+        big = big - 1
+        break
+
+print (str(big))
+print (len(str(big)))
+```
+
+The results from the above test script are as follows.
+
+```
+99999999999999999999999999999999999999999999999999999999999999999999999999999
+77
+```
+There are 77 (0 to 9) digits available in this single uint256 slot. So how do we access each of them, or sets of them, individually?
+
+## Function logic(pseudo code) to obtain any digit[s] from a uint256
 
 ```
 ((_value % (10 ** _position)) - (_value % (10 ** (_position - _size)))) / (10 ** (_position - _size));
@@ -33,7 +67,7 @@ is the amount of digits which you would like to extract from _value
 
 ### Solidity
 
-Here is an example of the pattern, written in solidity
+Here is an example of the above pseudo code, written in solidity
 ```
 contract uintTool {
     function getInt(uint256 _value, uint256 _position, uint256 _size) public pure returns(uint256){
