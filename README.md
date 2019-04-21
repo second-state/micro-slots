@@ -103,3 +103,11 @@ will return 04
 will return the left half (2019040400234567110) of this particular _value
 - _position 19 and _size 19 
 will return the right half (3045555602345605676) of this particular _value
+
+## Usage
+We mentioned above that there is 1 zero to one (0 to 1) digit and 77 zero to nine (o to 9) digits available in a single uint256 slot. The factors of 77 are **1, 7, 11 and 77** and as such we can store the following.
+* 1, 77 digit integer with an individual value between 0 and 99999999999999999999999999999999999999999999999999999999999999999999999999999
+* 77, 1 digit integers with an individual value between 0 and 9
+* 7, 11 digit integers with an individual value between 0 and 99999999999
+* 11, 7 digit integers with an individual value between 0 and 9999999
+
