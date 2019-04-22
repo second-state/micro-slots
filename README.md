@@ -166,6 +166,27 @@ Using the following fictitious value (_value = 12305) the following points are t
 - _newInt 4 and _position 2 would return 12345
 - _newInt 5 and _position 2 would return 12355
 
+## Writing example - updating multiple digits
+
+To update multiple digits you would use the following design.
+
+```
+_value + (_newInt * 10 ** (_position - 2))
+```
+
+Which in Solidity looks like this
+
+```
+function updateManyValues(uint256 _value, uint256 _newInt, uint256 _position) public pure returns(uint256){
+    uint256 e = _value + (_newInt * 10 ** (_position - 2));
+    return e;
+}
+```
+
+Using the following fictitious value (_value = 1004567) the following points are true:
+- _newInt 23 and _position 6 would return 1234567
+- _newInt 99 and _position 6 would return 1994567
+
 ## Overall efficiency for usage
 
 We mentioned above that there is 1 zero to one (0 to 1) digit and 77 zero to nine (o to 9) digits available in a single uint256 slot. The factors of 77 are **1, 7, 11 and 77** and as such the following combinations offer the most efficient storage with the least amount of waste.
