@@ -111,7 +111,9 @@ To zero out a value you would use the following design pattern.
 ```
 _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))))
 ```
+
 Which looks like this in Solidity.
+
 ```
     function zeroOutSingleValue(uint256 _value, uint256 _position) public pure returns(uint256){
         uint256 b = _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))));
@@ -123,6 +125,25 @@ Using the following fictitious value (_value = 1234) the following points are tr
 - _position 3 would return 1034
 
 ## Writing example - updating value
+
+To update a value you would use the following design pattern.
+
+```
+_value + _newInt * (10 ** (_position - 1))
+```
+
+Which in Solidity looks like this
+
+``` 
+function updateSingleValue(uint256 _value, uint256 _newInt, uint256 _position)public pure returns(uint256){
+    uint256 c = _value + _newInt * (10 ** (_position - 1));
+    return c;
+}
+```
+
+Using the following fictitious value (_value = 12305) the following points are true:
+- _newInt 4 and _position 2 would return 12345
+- _newInt 5 and _position 2 would return 12355
 
 ## Overall efficiency for usage
 
