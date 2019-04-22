@@ -104,7 +104,7 @@ will return the left half (2019040400234567110) of this particular _value
 - _position 19 and _size 19 
 will return the right half (3045555602345605676) of this particular _value
 
-## Writing example - zero out value
+## Writing example - zero out a single value
 
 To zero out a value you would use the following design pattern.
 
@@ -124,7 +124,27 @@ Using the following fictitious value (_value = 1234) the following points are tr
 - _position 2 would return 1204
 - _position 3 would return 1034
 
-## Writing example - updating value
+## Writing example - zero out one or multiple values
+
+To zero out one or more values at a time, use the following design pattern.
+
+```
+((_value % (10 ** _position)) - (_value % (10 ** (_position - _size)))) / (10 ** (_position - _size))
+```
+
+Which looks like this in Solidity
+
+```
+function zeroOutManyValues(uint256 _value, uint256 _position, uint256 _size) public pure returns(uint256){
+    uint256 c = _value - ((_value % (10 ** _position)) - (_value % (10 ** (_position - _size))));
+    return c;
+}
+```
+Using the following fictitious value (_value = 12345) the following points are true:
+- _newInt 3 and _position 2 would return 12005
+- _newInt 4 and _position 2 would return 10045
+
+## Writing example - updating a single zero value
 
 To update a value you would use the following design pattern.
 
