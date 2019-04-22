@@ -141,8 +141,9 @@ function zeroOutManyValues(uint256 _value, uint256 _position, uint256 _size) pub
 }
 ```
 Using the following fictitious value (_value = 12345) the following points are true:
-- _newInt 3 and _position 2 would return 12005
-- _newInt 4 and _position 2 would return 10045
+- _position 3 and _size 2 would return 12005
+- _position 4 and _size 2 would return 10045
+- _position 5 and _size 5 would return 00000
 
 ## Writing example - updating a single zero value
 
