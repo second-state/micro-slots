@@ -104,7 +104,27 @@ will return the left half (2019040400234567110) of this particular _value
 - _position 19 and _size 19 
 will return the right half (3045555602345605676) of this particular _value
 
-## Usage
+## Writing example - zero out value
+
+To zero out a value you would use the following design pattern.
+
+```
+_value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))))
+```
+Which looks like this in Solidity.
+```
+    function zeroOutSingleValue(uint256 _value, uint256 _position) public pure returns(uint256){
+        uint256 b = _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))));
+        return b;
+    }
+```
+Using the following fictitious value (_value = 1234) the following points are true:
+- _position 2 would return 1204
+- _position 3 would return 1034
+
+## Writing example - updating value
+
+## Overall efficiency for usage
 
 We mentioned above that there is 1 zero to one (0 to 1) digit and 77 zero to nine (o to 9) digits available in a single uint256 slot. The factors of 77 are **1, 7, 11 and 77** and as such the following combinations offer the most efficient storage with the least amount of waste.
 
