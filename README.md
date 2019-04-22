@@ -48,7 +48,9 @@ The results from the above test script are as follows.
 ```
 There are 77 (0 to 9) digits available in this single uint256 slot. So how do we access each of them, or sets of them, individually?
 
-## Function logic(pseudo code) to obtain any digit[s] from a uint256
+# Get integer
+
+## getInt function pseudo code
 
 ```
 ((_value % (10 ** _position)) - (_value % (10 ** (_position - _size)))) / (10 ** (_position - _size));
@@ -56,7 +58,7 @@ There are 77 (0 to 9) digits available in this single uint256 slot. So how do we
 
 Here are the descriptions for the pattern's arguments
 
-## Function arguments(inputs)
+## getInt function arguments(inputs)
 
 - _value
 is the big integer (uint256) which has a range from `0` to `2**256-1` 
@@ -65,7 +67,7 @@ is the single digit position (from within _value) from where you would like to b
 - _size
 is the amount of digits which you would like to extract from _value
 
-### Solidity
+## getInt written in Solidity
 
 Here is an example of the above pseudo code, written in solidity
 ```
@@ -77,7 +79,7 @@ contract uintTool {
 }
 ```
 
-### Vyper
+## getInt written in Vyper
 
 ```
 @public
@@ -86,7 +88,7 @@ def getInt(_value: uint256, _position: uint256, _size: uint256) -> uint256:
     a: uint256 = ((_value % (10 ** _position)) - (_value % (10 ** (_position - _size)))) / (10 ** (_position - _size))
     return a
 ```
-## Reading example
+## getInt output examples
 
 Using the following fictitious value (_value = 20190404002345671103045555602345605676) the following points are true:
 - _position 2 and _size 2 
@@ -104,35 +106,42 @@ will return the left half (2019040400234567110) of this particular _value
 - _position 19 and _size 19 
 will return the right half (3045555602345605676) of this particular _value
 
-## Writing example - zero out a single value
+# Zero-out a single value
 
-To zero out a value you would use the following design pattern.
+## zeroOutSingleValue function pseudo code
+
+To zero-out a value you would use the following design pattern.
 
 ```
 _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))))
 ```
 
-Which looks like this in Solidity.
+## zeroOutSingleValue function in Solidity
 
 ```
-    function zeroOutSingleValue(uint256 _value, uint256 _position) public pure returns(uint256){
-        uint256 b = _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))));
-        return b;
-    }
+function zeroOutSingleValue(uint256 _value, uint256 _position) public pure returns(uint256){
+    uint256 b = _value - (_value % (10 ** _position) - (_value % (10 ** (_position - 1))));
+    return b;
+}
 ```
+
+## zeroOutSingleValue output examples
+
 Using the following fictitious value (_value = 1234) the following points are true:
 - _position 2 would return 1204
 - _position 3 would return 1034
 
-## Writing example - zero out one or multiple values
+# Zero-out many values 
 
-To zero out one or more values at a time, use the following design pattern.
+## zeroOutManyValues pseudo code
+
+To zero-out one or more values at a time, use the following design pattern.
 
 ```
 ((_value % (10 ** _position)) - (_value % (10 ** (_position - _size)))) / (10 ** (_position - _size))
 ```
 
-Which looks like this in Solidity
+## zeroOutManyValues in Solidity
 
 ```
 function zeroOutManyValues(uint256 _value, uint256 _position, uint256 _size) public pure returns(uint256){
@@ -140,12 +149,17 @@ function zeroOutManyValues(uint256 _value, uint256 _position, uint256 _size) pub
     return c;
 }
 ```
+
+## zeroOutManyValues output examples
+
 Using the following fictitious value (_value = 12345) the following points are true:
 - _position 3 and _size 2 would return 12005
 - _position 4 and _size 2 would return 10045
 - _position 5 and _size 5 would return 00000
 
-## Writing example - updating a single zero value
+# Update single value
+
+## updateSingleValue function pseudo code
 
 To update a value you would use the following design pattern.
 
@@ -153,7 +167,7 @@ To update a value you would use the following design pattern.
 _value + _newInt * (10 ** (_position - 1))
 ```
 
-Which in Solidity looks like this
+## updateSingleValue function in Solidity
 
 ``` 
 function updateSingleValue(uint256 _value, uint256 _newInt, uint256 _position)public pure returns(uint256){
@@ -162,11 +176,15 @@ function updateSingleValue(uint256 _value, uint256 _newInt, uint256 _position)pu
 }
 ```
 
+## updateSingleValue output examples
+
 Using the following fictitious value (_value = 12305) the following points are true:
 - _newInt 4 and _position 2 would return 12345
 - _newInt 5 and _position 2 would return 12355
 
-## Writing example - updating multiple digits
+# Update many values
+
+## updateManyValues function pseudo code
 
 To update multiple digits you would use the following design.
 
@@ -174,7 +192,7 @@ To update multiple digits you would use the following design.
 _value + (_newInt * 10 ** (_position - 2))
 ```
 
-Which in Solidity looks like this
+## updateManyValues function in Solidity
 
 ```
 function updateManyValues(uint256 _value, uint256 _newInt, uint256 _position) public pure returns(uint256){
@@ -183,9 +201,13 @@ function updateManyValues(uint256 _value, uint256 _newInt, uint256 _position) pu
 }
 ```
 
+## updateManyValues output examples
+
 Using the following fictitious value (_value = 1004567) the following points are true:
 - _newInt 23 and _position 6 would return 1234567
 - _newInt 99 and _position 6 would return 1994567
+
+# Additional information
 
 ## Overall efficiency for usage
 
