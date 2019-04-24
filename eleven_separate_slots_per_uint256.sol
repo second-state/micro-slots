@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
 // The following contract uses a fixed convention which provides 11 unique micro-slots, each with 7 digits between 0 and 9.
+// Each of the functions are designed to explicitly return the appropriate slot.
 // Warning: This is a prototype for research purposes and it is not to be used to transact real value yet.
 
 contract MicroSlots{
